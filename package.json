@@ -1,0 +1,22 @@
+{
+  "name": "chatpot-message-consumer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayJayDee/Chatpot-Message-Consumer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JayJayDee/Chatpot-Message-Consumer/issues"
+  },
+  "homepage": "https://github.com/JayJayDee/Chatpot-Message-Consumer#readme",
+  "dependencies": {
+    "amqp": "^0.2.7"
+  }
+}
