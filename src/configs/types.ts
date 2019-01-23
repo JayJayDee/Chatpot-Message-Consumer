@@ -4,7 +4,7 @@ export namespace ConfigTypes {
   };
   export type AmqpConfig = {
     host: string;
-    port: string;
+    port: number;
     login: string;
     password: string;
   };
