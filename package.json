@@ -1,22 +1,42 @@
 {
   "name": "chatpot-message-consumer",
   "version": "1.0.0",
-  "description": "",
+  "description": "chatpot message consumer for chatpot services",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "CONFIG_FILE=$HOME/chatpot-message-consumer-conf.json TS_NODE_FILES=true nodemon --watch ./src -e ts --exec ts-node -- --project ./tsconfig.json ./src/app",
+    "lint": "tslint -t stylish --project ./tsconfig.json",
+    "test": "jest -c jest.config.js",
+    "test:coverage": "jest -c jest.config.js --coverage",
+    "clean": "rimraf coverage dist",
+    "build": "npm run clean && npm run lint && npm run test && tsc -p ./tsconfig.build.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JayJayDee/Chatpot-Message-Consumer.git"
   },
-  "author": "",
+  "author": "JayJayDee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/JayJayDee/Chatpot-Message-Consumer/issues"
+    "url": "https://github.com/JayJayDee/Chatpot-Room-Server/issues"
   },
-  "homepage": "https://github.com/JayJayDee/Chatpot-Message-Consumer#readme",
+  "homepage": "https://github.com/JayJayDee/Chatpot-Room-Server#readme",
+  "devDependencies": {
+    "@types/amqp": "^0.2.4",
+    "@types/lodash": "^4.14.120",
+    "@types/node": "^10.12.18",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.7",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.1"
+  },
   "dependencies": {
-    "amqp": "^0.2.7"
+    "amqp": "^0.2.7",
+    "lodash": "^4.17.11",
+    "smart-factory": "^1.0.12"
   }
 }
