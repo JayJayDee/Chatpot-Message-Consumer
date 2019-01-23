@@ -1,7 +1,7 @@
+import { connect, Connection } from 'amqplib';
 import { ConfigTypes } from '../configs';
 import { QueueTypes } from './types';
 import { LoggerTypes } from '../loggers';
-import { AMQPClient, createConnection } from 'amqp';
 
 const initRabbitMqClient =
   async (cfg: ConfigTypes.AmqpConfig,
@@ -14,21 +14,20 @@ const initRabbitMqClient =
 export default initRabbitMqClient;
 
 const buildAmqpClient =
-  (client: AMQPClient): QueueTypes.AmqpClient => ({
-    subscribe(callback) {
-      // TODO: to be implemented.
+  (client: Connection): QueueTypes.AmqpClient => ({
+    async subscribe(topic, callback) {
+      await client.createChannel();
+      // TODO: to be replaced.
     }
   });
 
 const createRabbitMqConnection =
-  (cfg: ConfigTypes.AmqpConfig, log: LoggerTypes.Logger): Promise<AMQPClient> =>
+  (cfg: ConfigTypes.AmqpConfig, log: LoggerTypes.Logger): Promise<Connection> =>
     new Promise((resolve, reject) => {
-      const con = createConnection(cfg);
-      con.on('ready', (con) => {
-        resolve(con);
-      });
-      con.on('error', (err) => {
-        reject(err);
-        con.off('err', this);
-      });
+      connect({
+        hostname: cfg.host,
+        port: cfg.port,
+        username: cfg.login,
+        password: cfg.password
+      }).then(resolve).catch(reject);
     });

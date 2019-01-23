@@ -3,5 +3,6 @@ export namespace QueueTypes {
 
   export type AmqpClient = {
     subscribe: (topic: string, subscriber: AmqpSubscriber) => void;
+
   };
 }
