@@ -9,6 +9,13 @@ const initRabbitMqClient =
       log.info(`[amqp] establishing amqp-client connection:${cfg.host}...`);
       const client = await createRabbitMqConnection(cfg, log);
       log.info(`[amqp] amqp-client connection established`);
+
+      const channel = await client.createChannel();
+      await channel.assertQueue('test-queue', {durable: true});
+
+      const msg = 'test';
+      channel.sendToQueue('test-queue', Buffer.from(msg), {deliveryMode: true});
+
       return buildAmqpClient(client);
     };
 export default initRabbitMqClient;
