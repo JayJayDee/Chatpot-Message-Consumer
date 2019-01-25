@@ -1,8 +1,7 @@
-import { connect, Connection } from 'amqplib';
+import { connect, Connection, Channel } from 'amqplib';
 import { ConfigTypes } from '../configs';
 import { QueueTypes } from './types';
 import { LoggerTypes } from '../loggers';
-import { BSON } from 'bsonfy';
 
 const initRabbitMqClient =
   async (cfg: ConfigTypes.AmqpConfig,
@@ -13,21 +12,19 @@ const initRabbitMqClient =
 
       const channel = await client.createChannel();
       await channel.assertQueue('test-queue', {durable: true});
-
-      const data = {
-        test: 'test2'
-      };
-      channel.sendToQueue('test-queue', Buffer.from(BSON.serialize(data)), {deliveryMode: true});
-
-      return buildAmqpClient(client);
+      log.info(`[amqp] amqp-channel created`);
+      return buildAmqpClient(channel);
     };
 export default initRabbitMqClient;
 
 const buildAmqpClient =
-  (client: Connection): QueueTypes.AmqpClient => ({
-    async subscribe(topic, callback) {
-      await client.createChannel();
-      // TODO: to be replaced.
+  (client: Channel): QueueTypes.AmqpClient => ({
+    async subscribe(topic, subscriber) {
+      await client.assertQueue(topic, { durable: true });
+      client.consume(topic, (msg) => {
+        console.log(msg);
+        // TODO: calls back to subscriber
+      }, { noAck: true });
     }
   });
 
