@@ -9,21 +9,20 @@ const initRabbitMqClient =
       log.info(`[amqp] establishing amqp-client connection:${cfg.host}...`);
       const client = await createRabbitMqConnection(cfg, log);
       log.info(`[amqp] amqp-client connection established`);
-
       const channel = await client.createChannel();
-      await channel.assertQueue('test-queue', {durable: true});
       log.info(`[amqp] amqp-channel created`);
-      return buildAmqpClient(channel);
+      return buildAmqpClient(channel, log);
     };
 export default initRabbitMqClient;
 
 const buildAmqpClient =
-  (client: Channel): QueueTypes.AmqpClient => ({
+  (channel: Channel, log: LoggerTypes.Logger): QueueTypes.AmqpClient => ({
     async subscribe(topic, subscriber) {
-      await client.assertQueue(topic, { durable: true });
-      client.consume(topic, (msg) => {
-        console.log(msg);
-        // TODO: calls back to subscriber
+      await channel.assertQueue(topic, { durable: true });
+      log.debug(`[amqp] queue:${topic} consuming started.`);
+      channel.consume(topic, (msg) => {
+        const payload: JSON = JSON.parse(msg.content.toString());
+        subscriber(payload);
       }, { noAck: true });
     }
   });
