@@ -19,7 +19,7 @@ injectable(ConfigModules.ConfigRules, [],
   async (): Promise<ConfigTypes.ConfigRule[]> => ([
     { key: 'AMQP_HOST', path: ['amqp', 'host'] },
     { key: 'AMQP_PORT', path: ['amqp', 'port'] },
-    { key: 'AMQP_LOGIN', path: ['amqp', 'login'] },
+    { key: 'AMQP_LOGIN', path: ['amqp', 'login']  },
     { key: 'AMQP_PASSWORD', path: ['amqp', 'password'] },
   ]));
 

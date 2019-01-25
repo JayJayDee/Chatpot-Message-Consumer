@@ -1,13 +1,13 @@
 import { injectable } from 'smart-factory';
 import { ConsumerModules } from './modules';
-import { QueueModules, QueueTypes } from '../queues';
+import { ConsumerTypes } from './types';
 
-injectable(ConsumerModules.FirebaseConsumer,
-  [ QueueModules.AmqpClient ],
-  async (client: QueueTypes.AmqpClient) =>
-    () => {
-      client.subscribe('test-topic', async (msg) => {
-        console.log('message arrived!');
-        console.log(msg);
-      });
-    });
+injectable(ConsumerModules.Consumers.FirebaseConsumer,
+  [],
+  async (): Promise<ConsumerTypes.QueueConsumer> =>
+    ({
+      name: 'firebase-messages',
+      async consume(payload) {
+        console.log(payload);
+      }
+    }));

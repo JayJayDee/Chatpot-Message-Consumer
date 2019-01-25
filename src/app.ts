@@ -1,11 +1,13 @@
 import { init, resolve } from 'smart-factory';
-import { ConsumerModules } from './consumers';
+import { ConsumerModules, ConsumerTypes } from './consumers';
 
 (async () => {
   await init({
     includes: [`${__dirname}/**/*.ts`, `${__dirname}/**/*.js`]
   });
 
-  const consume: Function = resolve(ConsumerModules.FirebaseConsumer);
-  consume();
+  const run =
+    <ConsumerTypes.ConsumerRunner>resolve
+      (ConsumerModules.ConsumerRunner);
+  await run();
 })();
