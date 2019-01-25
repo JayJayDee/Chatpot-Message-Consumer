@@ -2,6 +2,7 @@ import { connect, Connection } from 'amqplib';
 import { ConfigTypes } from '../configs';
 import { QueueTypes } from './types';
 import { LoggerTypes } from '../loggers';
+import { BSON } from 'bsonfy';
 
 const initRabbitMqClient =
   async (cfg: ConfigTypes.AmqpConfig,
@@ -13,8 +14,10 @@ const initRabbitMqClient =
       const channel = await client.createChannel();
       await channel.assertQueue('test-queue', {durable: true});
 
-      const msg = 'test';
-      channel.sendToQueue('test-queue', Buffer.from(msg), {deliveryMode: true});
+      const data = {
+        test: 'test2'
+      };
+      channel.sendToQueue('test-queue', Buffer.from(BSON.serialize(data)), {deliveryMode: true});
 
       return buildAmqpClient(client);
     };
