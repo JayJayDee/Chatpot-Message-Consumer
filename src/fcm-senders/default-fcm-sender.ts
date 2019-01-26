@@ -24,11 +24,13 @@ const initFcmSender =
     }
     sender = {
       async sendToTopic(topic, payload) {
-        // TODO: to be implemented
+        const msg = admin.messaging as any;
+        await msg.sendToTopic(topic, payload);
       },
 
-      async sendToDevice(deviceToken, payload) {
-        // TODO: to be implemented
+      async sendToDevice(deviceTokens, payload) {
+        const msg = admin.messaging as any;
+        await msg.sendToDevice(deviceTokens, payload);
       }
     };
     return sender;
