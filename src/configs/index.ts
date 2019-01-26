@@ -11,6 +11,9 @@ injectable(ConfigModules.EmptyConfig, [], async (): Promise<ConfigTypes.RootConf
     port: null,
     login: null,
     password: null
+  },
+  fcm: {
+    privKeyPath: null
   }
 }));
 
@@ -21,6 +24,7 @@ injectable(ConfigModules.ConfigRules, [],
     { key: 'AMQP_PORT', path: ['amqp', 'port'] },
     { key: 'AMQP_LOGIN', path: ['amqp', 'login']  },
     { key: 'AMQP_PASSWORD', path: ['amqp', 'password'] },
+    { key: 'FCM_PRIVKEY_PATH', path: ['fcm', 'privKeyPath']}
   ]));
 
 injectable(ConfigModules.ConfigSource,
@@ -38,6 +42,10 @@ injectable(ConfigModules.RootConfig,
 injectable(ConfigModules.AmqpConfig,
   [ConfigModules.RootConfig],
   async (root: ConfigTypes.RootConfig) => root.amqp);
+
+injectable(ConfigModules.FcmConfig,
+  [ConfigModules.RootConfig],
+  async (root: ConfigTypes.RootConfig) => root.fcm);
 
 injectable(ConfigModules.Env,
   [ConfigModules.ConfigSource],

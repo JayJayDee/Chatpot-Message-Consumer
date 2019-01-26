@@ -21,8 +21,13 @@ const buildAmqpClient =
       await channel.assertQueue(topic, { durable: true });
       log.debug(`[amqp] queue:${topic} consuming started.`);
       channel.consume(topic, (msg) => {
-        const payload: JSON = JSON.parse(msg.content.toString());
-        subscriber(payload);
+        try {
+          const payload: JSON = JSON.parse(msg.content.toString());
+          subscriber(payload);
+        } catch (err) {
+          // if case of failed to parse payload as json, ignore it.
+          log.error(`[amqp] malformed message received: ${err.message}`);
+        }
       }, { noAck: true });
     }
   });

@@ -1,12 +1,16 @@
 export namespace ConfigTypes {
   export type RootConfig = {
     amqp: AmqpConfig;
+    fcm: FcmConfig;
   };
   export type AmqpConfig = {
     host: string;
     port: number;
     login: string;
     password: string;
+  };
+  export type FcmConfig = {
+    privKeyPath: string;
   };
   export enum Env {
     DEV = 'DEV',
