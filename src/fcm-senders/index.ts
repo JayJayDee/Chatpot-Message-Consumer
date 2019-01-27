@@ -13,7 +13,7 @@ injectable(FcmSenderModules.SendToDevice,
 
 injectable(FcmSenderModules.SendToTopic,
   [ ConfigModules.FcmConfig ],
-  async (cfg: ConfigTypes.FcmConfig): Promise<FcmSenderTypes.SendToDevice> => {
+  async (cfg: ConfigTypes.FcmConfig): Promise<FcmSenderTypes.SendToTopic> => {
     const fcm = await initFcm(cfg);
     return fcm.sendToTopic;
   });
