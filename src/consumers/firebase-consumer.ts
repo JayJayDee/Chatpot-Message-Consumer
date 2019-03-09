@@ -20,6 +20,7 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
     ({
       name,
       consume: async (payload: PushMessage) => {
+        log.debug(`[fcm-consumer] message received from amqp queue:${name}`);
         await sendToTopic(`ROOM-${payload.topic}`, {
           notification: {
             title: payload.title,
@@ -27,7 +28,7 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
           },
           data: payload.body
         });
-        log.debug(`message published: room:${payload.topic}`);
+        log.debug(`[fcm-consumer] message published to fcm: room:${payload.topic}`);
         console.log(payload);
       }
     }));
