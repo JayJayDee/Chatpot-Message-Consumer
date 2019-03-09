@@ -24,13 +24,31 @@ const initFcmSender =
     }
     sender = {
       async sendToTopic(topic, payload) {
+        if (payload.data) {
+          payload.data = {
+            data: JSON.stringify(payload.data)
+          };
+        }
         await admin.messaging().sendToTopic(topic, payload);
       },
 
       async sendToDevice(deviceTokens, payload) {
+        if (payload.data) {
+          payload.data = {
+            data: JSON.stringify(payload.data)
+          };
+        }
         await admin.messaging().sendToDevice(deviceTokens, payload);
       }
     };
     return sender;
   };
 export default initFcmSender;
+
+
+// const stringifyOnedepth = (src: {[key: string]: any}): {[key: string]: string} => {
+//   const resp: {[key: string]: string} = {};
+//   Object.keys(src).map((k) =>
+//     resp[k] = isObject(src[k]) ? JSON.stringify(src[k]) : src[k]);
+//   return resp;
+// };

@@ -28,7 +28,6 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
           },
           data: payload.body
         });
-        log.debug(`[fcm-consumer] message published to fcm: room:${payload.topic}`);
-        console.log(payload);
+        log.debug(`[fcm-consumer] message published to fcm, topic:${payload.topic}`);
       }
     }));
