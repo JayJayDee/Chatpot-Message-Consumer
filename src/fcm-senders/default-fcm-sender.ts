@@ -26,7 +26,7 @@ const initFcmSender =
       async sendToTopic(topic, payload) {
         if (payload.data) {
           payload.data = {
-            data: JSON.stringify(payload.data)
+            payload: JSON.stringify(payload.data)
           };
         }
         await admin.messaging().sendToTopic(topic, payload);
@@ -35,7 +35,7 @@ const initFcmSender =
       async sendToDevice(deviceTokens, payload) {
         if (payload.data) {
           payload.data = {
-            data: JSON.stringify(payload.data)
+            payload: JSON.stringify(payload.data)
           };
         }
         await admin.messaging().sendToDevice(deviceTokens, payload);
