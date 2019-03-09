@@ -20,7 +20,7 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
     ({
       name,
       consume: async (payload: PushMessage) => {
-        await sendToTopic(`room-${payload.topic}`, {
+        await sendToTopic(`ROOM-${payload.topic}`, {
           notification: {
             title: payload.title,
             body: payload.subtitle
