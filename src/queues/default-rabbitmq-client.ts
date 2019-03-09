@@ -21,6 +21,7 @@ const buildAmqpClient =
       await channel.assertQueue(topic, { durable: true });
       log.debug(`[amqp] queue:${topic} consuming started.`);
       channel.consume(topic, (msg) => {
+        log.debug(`[amqp] message received from queue:${topic}`);
         try {
           const payload: JSON = JSON.parse(msg.content.toString());
           subscriber(payload);
