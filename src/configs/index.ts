@@ -14,6 +14,10 @@ injectable(ConfigModules.EmptyConfig, [], async (): Promise<ConfigTypes.RootConf
   },
   fcm: {
     privKeyPath: null
+  },
+  topic: {
+    deviceQueue: null,
+    firebaseMessageQueue: null
   }
 }));
 
@@ -24,7 +28,9 @@ injectable(ConfigModules.ConfigRules, [],
     { key: 'AMQP_PORT', path: ['amqp', 'port'] },
     { key: 'AMQP_LOGIN', path: ['amqp', 'login']  },
     { key: 'AMQP_PASSWORD', path: ['amqp', 'password'] },
-    { key: 'FCM_PRIVKEY_PATH', path: ['fcm', 'privKeyPath']}
+    { key: 'FCM_PRIVKEY_PATH', path: ['fcm', 'privKeyPath']},
+    { key: 'TOPIC_DEVICE_QUEUE', path: ['topic', 'deviceQueue'] },
+    { key: 'TOPIC_FIREBASE_MESSAGE_QUEUE', path: ['topic', 'firebaseMessageQueue'] }
   ]));
 
 injectable(ConfigModules.ConfigSource,
@@ -46,6 +52,10 @@ injectable(ConfigModules.AmqpConfig,
 injectable(ConfigModules.FcmConfig,
   [ConfigModules.RootConfig],
   async (root: ConfigTypes.RootConfig) => root.fcm);
+
+injectable(ConfigModules.TopicConfig,
+  [ConfigModules.RootConfig],
+  async (root: ConfigTypes.RootConfig) => root.topic);
 
 injectable(ConfigModules.Env,
   [ConfigModules.ConfigSource],

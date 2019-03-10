@@ -3,6 +3,7 @@ export namespace ConsumerModules {
   export const ConsumerRunner = 'Consumer/ConsumerRunner';
 
   export enum Consumers {
-    FirebaseConsumer = 'Consumer/FirebaseConsumer'
+    FirebaseConsumer = 'Consumer/FirebaseConsumer',
+    DeviceConsumer = 'Consumer/DeviceConsumer'
   }
 }

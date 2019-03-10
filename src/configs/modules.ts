@@ -6,6 +6,7 @@ export namespace ConfigModules {
   export const RootConfig = 'Config/RootConfig';
   export const AmqpConfig = 'Config/AmqpConfig';
   export const FcmConfig = 'Config/FcmConfig';
+  export const TopicConfig = 'Config/TopicConfig';
   export const Env = 'Config/Env';
   export const ConfigRules = 'Config/ConfigRules';
 }
