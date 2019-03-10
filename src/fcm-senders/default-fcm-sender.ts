@@ -46,11 +46,11 @@ const initFcmSender =
       },
 
       async subscribe(topic, deviceTokens) {
-
+        await admin.messaging().subscribeToTopic(deviceTokens, topic);
       },
 
       async unsubscribe(topic, deviceTokens) {
-
+        await admin.messaging().unsubscribeFromTopic(deviceTokens, topic);
       }
     };
     return sender;
