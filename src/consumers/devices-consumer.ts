@@ -4,6 +4,17 @@ import { LoggerModules, LoggerTypes } from '../loggers';
 import { ConfigModules, ConfigTypes } from '../configs';
 import { ConsumerTypes } from './types';
 
+enum SubscriptionType {
+  SUBSCRIBE = 'SUBSCRIBE',
+  UNSUBSCRIBE = 'UNSUBSCRIBE'
+}
+
+type DeviceSubscription = {
+  type: SubscriptionType;
+  device_tokens: string[];
+  topic: string;
+};
+
 injectable(ConsumerModules.Consumers.DeviceConsumer,
   [ LoggerModules.Logger,
     ConfigModules.TopicConfig ],
@@ -12,7 +23,7 @@ injectable(ConsumerModules.Consumers.DeviceConsumer,
 
     ({
       name: cfg.deviceQueue,
-      consume: async (payload: any) => {
+      consume: async (payload: DeviceSubscription) => {
         log.debug(`[device-consumer] message received from amqp queue:${cfg.deviceQueue}`);
         console.log(payload);
       }

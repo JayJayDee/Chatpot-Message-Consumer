@@ -1,17 +1,20 @@
 import * as admin from 'firebase-admin';
 import { ConfigTypes } from '../configs';
 import { FcmSenderTypes } from './types';
+import { LoggerTypes } from '../loggers';
 
 type FcmSender = {
   sendToTopic: FcmSenderTypes.SendToTopic,
-  sendToDevice: FcmSenderTypes.SendToDevice
+  sendToDevice: FcmSenderTypes.SendToDevice,
+  subscribe: FcmSenderTypes.Subscribe,
+  unsubscribe: FcmSenderTypes.Unsubscribe
 };
 
 class FcmInitError extends Error {}
 
 let sender: FcmSender = null;
 const initFcmSender =
-  async (config: ConfigTypes.FcmConfig): Promise<FcmSender> => {
+  async (config: ConfigTypes.FcmConfig, log: LoggerTypes.Logger): Promise<FcmSender> => {
     if (sender != null) return sender;
 
     try {
@@ -19,6 +22,7 @@ const initFcmSender =
       admin.initializeApp({
         credential: admin.credential.cert(privKeyContent)
       });
+      log.debug(`[fcm-sender] fcm initialized`);
     } catch (err) {
       throw new FcmInitError(`failed to initialize fcm: ${err.message}`);
     }
@@ -39,6 +43,14 @@ const initFcmSender =
           };
         }
         await admin.messaging().sendToDevice(deviceTokens, payload);
+      },
+
+      async subscribe(topic, deviceTokens) {
+
+      },
+
+      async unsubscribe(topic, deviceTokens) {
+
       }
     };
     return sender;

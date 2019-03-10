@@ -12,7 +12,6 @@ type PushMessage = {
   body: {[key: string]: any};
 };
 
-
 injectable(ConsumerModules.Consumers.FirebaseConsumer,
   [ LoggerModules.Logger,
     FcmSenderModules.SendToTopic,
