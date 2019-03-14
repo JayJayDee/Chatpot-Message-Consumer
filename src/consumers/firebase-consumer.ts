@@ -29,7 +29,10 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
             title: payload.title,
             body: payload.subtitle
           },
-          data: payload.body
+          data: {
+            click_action: 'FLUTTER_NOTIFICATION_CLICK',
+            ... payload.body
+          }
         });
         log.debug(`[fcm-consumer] message published to fcm, topic:${payload.topic}`);
       }
