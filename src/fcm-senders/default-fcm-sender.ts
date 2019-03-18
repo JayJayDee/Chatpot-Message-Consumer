@@ -39,6 +39,7 @@ const initFcmSender =
       async sendToDevice(deviceTokens, payload) {
         if (payload.data) {
           payload.data = {
+            click_action: 'FLUTTER_NOTIFICATION_CLICK',
             payload: JSON.stringify(payload.data)
           };
         }
