@@ -6,8 +6,10 @@ import { LoggerModules, LoggerTypes } from '../loggers';
 import { ConfigModules, ConfigTypes } from '../configs';
 
 type PushMessage = {
-  title: string;
-  subtitle: string;
+  title?: string;
+  title_key?: string;
+  subtitle?: string;
+  subtitle_key?: string;
   topic: string;
   body: {[key: string]: any};
 };
@@ -27,7 +29,9 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
         await sendToTopic(payload.topic, {
           notification: {
             title: payload.title,
-            body: payload.subtitle
+            title_loc_key: payload.title_key,
+            body: payload.subtitle,
+            body_loc_key: payload.subtitle_key
           },
           data: payload.body
         });
