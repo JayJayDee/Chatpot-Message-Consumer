@@ -14,6 +14,13 @@ type PushMessage = {
   body: {[key: string]: any};
 };
 
+type NativeNotification = {
+  title?: string;
+  title_loc_key?: string;
+  body?: string;
+  body_loc_key?: string;
+};
+
 injectable(ConsumerModules.Consumers.FirebaseConsumer,
   [ LoggerModules.Logger,
     FcmSenderModules.SendToTopic,
@@ -26,15 +33,21 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
       name: cfg.firebaseMessageQueue,
       consume: async (payload: PushMessage) => {
         log.debug(`[fcm-consumer] message received from amqp queue:${cfg.firebaseMessageQueue}`);
-        await sendToTopic(payload.topic, {
-          notification: {
-            title: payload.title,
-            title_loc_key: payload.title_key,
-            body: payload.subtitle,
-            body_loc_key: payload.subtitle_key
-          },
+        const notification: NativeNotification = {};
+        const sendParam = {
+          notification,
           data: payload.body
-        });
+        };
+
+        if (payload.title) notification.title = payload.title;
+        if (payload.title_key) notification.title_loc_key = payload.title_key;
+        if (payload.subtitle) notification.body = payload.subtitle;
+        if (payload.subtitle_key) notification.body_loc_key = payload.subtitle_key;
+
+        log.debug(`[fcm-consumer] fcm-payload`);
+        log.debug(sendParam);
+
+        await sendToTopic(payload.topic, sendParam);
         log.debug(`[fcm-consumer] message published to fcm, topic:${payload.topic}`);
       }
     }));
