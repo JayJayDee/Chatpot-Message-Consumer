@@ -30,6 +30,7 @@ const initFcmSender =
       async sendToTopic(topic, payload) {
         if (payload.data) {
           payload.data = {
+            click_action: 'FLUTTER_NOTIFICATION_CLICK',
             payload: JSON.stringify(payload.data)
           };
         }
