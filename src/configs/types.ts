@@ -25,6 +25,7 @@ export namespace ConfigTypes {
   export type TopicConfig = {
     deviceQueue: string;
     firebaseMessageQueue: string;
+    firebasePeerMessageQueue: string;
   };
   export type ConfigSource = {[key: string]: any};
   export type ConfigReader = () => Promise<ConfigSource>;

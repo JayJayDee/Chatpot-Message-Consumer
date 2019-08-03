@@ -21,7 +21,9 @@ type NativeNotification = {
   body_loc_key?: string;
 };
 
-injectable(ConsumerModules.Consumers.FirebaseConsumer,
+const tag = '[fcm-consumer]';
+
+injectable(ConsumerModules.Consumers.TopicFirebaseConsumer,
   [ LoggerModules.Logger,
     FcmSenderModules.SendToTopic,
     ConfigModules.TopicConfig ],
@@ -32,7 +34,7 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
     ({
       name: cfg.firebaseMessageQueue,
       consume: async (payload: PushMessage) => {
-        log.debug(`[fcm-consumer] message received from amqp queue:${cfg.firebaseMessageQueue}`);
+        log.debug(`${tag} message received from amqp queue:${cfg.firebaseMessageQueue}`);
         const notification: NativeNotification = {};
         const sendParam = {
           notification,
@@ -44,10 +46,25 @@ injectable(ConsumerModules.Consumers.FirebaseConsumer,
         if (payload.subtitle) notification.body = payload.subtitle;
         if (payload.subtitle_key) notification.body_loc_key = payload.subtitle_key;
 
-        log.debug(`[fcm-consumer] fcm-payload`);
+        log.debug(`${tag} fcm-payload`);
         log.debug(sendParam);
 
         await sendToTopic(payload.topic, sendParam);
-        log.debug(`[fcm-consumer] message published to fcm, topic:${payload.topic}`);
+        log.debug(`${tag} message published to fcm, topic:${payload.topic}`);
+      }
+    }));
+
+
+injectable(ConsumerModules.Consumers.PeerFirebaseConsumer,
+  [ LoggerModules.Logger,
+    ConfigModules.TopicConfig ],
+  async (log: LoggerTypes.Logger,
+    cfg: ConfigTypes.TopicConfig): Promise<ConsumerTypes.QueueConsumer> =>
+
+    ({
+      name: cfg.firebasePeerMessageQueue,
+      consume: async (payload: any) => {
+        log.debug(`${tag} message received from amqp queue:${cfg.firebasePeerMessageQueue}`);
+        console.log(payload);
       }
     }));
