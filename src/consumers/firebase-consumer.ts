@@ -17,8 +17,10 @@ type PushMessage = {
 type NativeNotification = {
   title?: string;
   title_loc_key?: string;
+  title_loc_args?: string[];
   body?: string;
   body_loc_key?: string;
+  body_loc_args?: string[];
 };
 
 const tag = '[fcm-consumer]';
@@ -55,16 +57,49 @@ injectable(ConsumerModules.Consumers.TopicFirebaseConsumer,
     }));
 
 
+type PeerMessage = {
+  member_nos: string[];
+  device_tokens: string[];
+  title: string;
+  title_loc_key?: string;
+  title_args?: string[];
+  subtitle?: string;
+  subtitle_loc_key?: string;
+  subtitle_args?: any[];
+  body: {[key: string]: any};
+};
+
 injectable(ConsumerModules.Consumers.PeerFirebaseConsumer,
   [ LoggerModules.Logger,
-    ConfigModules.TopicConfig ],
+    ConfigModules.TopicConfig,
+    FcmSenderModules.SendToDevice ],
   async (log: LoggerTypes.Logger,
-    cfg: ConfigTypes.TopicConfig): Promise<ConsumerTypes.QueueConsumer> =>
+    cfg: ConfigTypes.TopicConfig,
+    sendToDevice: FcmSenderTypes.SendToDevice): Promise<ConsumerTypes.QueueConsumer> =>
 
     ({
       name: cfg.firebasePeerMessageQueue,
-      consume: async (payload: any) => {
+      consume: async (payload: PeerMessage) => {
         log.debug(`${tag} message received from amqp queue:${cfg.firebasePeerMessageQueue}`);
         console.log(payload);
+
+        const notification: NativeNotification = {};
+        const sendParam = {
+          notification,
+          data: payload.body
+        };
+
+        if (payload.title) notification.title = payload.title;
+        if (payload.title_loc_key) notification.title_loc_key = payload.title_loc_key;
+        if (payload.title_args) notification.body_loc_args = payload.title_args;
+
+        if (payload.subtitle) notification.body = payload.subtitle;
+        if (payload.subtitle_loc_key) notification.body_loc_key = payload.subtitle_loc_key;
+        if (payload.subtitle_args) notification.body_loc_args = payload.subtitle_args;
+
+        log.debug(`${tag} fcm-peer-payload`);
+        log.debug(sendParam);
+
+        sendToDevice(payload.device_tokens, sendParam);
       }
     }));
