@@ -17,10 +17,10 @@ type PushMessage = {
 type NativeNotification = {
   title?: string;
   title_loc_key?: string;
-  title_loc_args?: string[];
+  title_loc_args?: string;
   body?: string;
   body_loc_key?: string;
-  body_loc_args?: string[];
+  body_loc_args?: string;
 };
 
 const tag = '[fcm-consumer]';
@@ -91,11 +91,11 @@ injectable(ConsumerModules.Consumers.PeerFirebaseConsumer,
 
         if (payload.title) notification.title = payload.title;
         if (payload.title_loc_key) notification.title_loc_key = payload.title_loc_key;
-        if (payload.title_args) notification.body_loc_args = payload.title_args;
+        if (payload.title_args) notification.title_loc_args = JSON.stringify(payload.title_args);
 
         if (payload.subtitle) notification.body = payload.subtitle;
         if (payload.subtitle_loc_key) notification.body_loc_key = payload.subtitle_loc_key;
-        if (payload.subtitle_args) notification.body_loc_args = payload.subtitle_args;
+        if (payload.subtitle_args) notification.body_loc_args = JSON.stringify(payload.subtitle_args);
 
         log.debug(`${tag} fcm-peer-payload`);
         log.debug(sendParam);
