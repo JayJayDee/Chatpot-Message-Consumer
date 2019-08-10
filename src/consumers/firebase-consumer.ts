@@ -7,10 +7,10 @@ import { ConfigModules, ConfigTypes } from '../configs';
 
 type PushMessage = {
   title?: string;
-  title_key?: string;
+  title_loc_key?: string;
   title_args?: any[];
   subtitle?: string;
-  subtitle_key?: string;
+  subtitle_loc_key?: string;
   subtitle_args?: any[];
   topic: string;
   body: {[key: string]: any};
@@ -46,10 +46,10 @@ injectable(ConsumerModules.Consumers.TopicFirebaseConsumer,
         };
 
         if (payload.title) notification.title = payload.title;
-        if (payload.title_key) notification.title_loc_key = payload.title_key;
+        if (payload.title_loc_key) notification.title_loc_key = payload.title_loc_key;
         if (payload.title_args) notification.title_loc_args = JSON.stringify(payload.title_args);
         if (payload.subtitle) notification.body = payload.subtitle;
-        if (payload.subtitle_key) notification.body_loc_key = payload.subtitle_key;
+        if (payload.subtitle_loc_key) notification.body_loc_key = payload.subtitle_loc_key;
         if (payload.subtitle_args) notification.body_loc_args = JSON.stringify(payload.subtitle_args);
 
         log.debug(`${tag} fcm-payload`);
