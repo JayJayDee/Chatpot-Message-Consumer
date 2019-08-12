@@ -34,8 +34,9 @@ const initFcmSender =
             payload: JSON.stringify(payload.data)
           };
         }
-        console.log(payload);
-        await admin.messaging().sendToTopic(topic, payload);
+        await admin.messaging().sendToTopic(topic, payload, {
+          collapseKey: topic
+        });
       },
 
       async sendToDevice(deviceTokens, payload) {
