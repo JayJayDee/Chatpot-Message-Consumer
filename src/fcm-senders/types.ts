@@ -1,6 +1,5 @@
 export namespace FcmSenderTypes {
   export type Payload = {
-    collapse_key?: string;
     data?: {[key: string]: any};
     notification: {[key: string]: any};
   };
