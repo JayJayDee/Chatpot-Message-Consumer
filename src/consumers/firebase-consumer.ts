@@ -42,7 +42,8 @@ injectable(ConsumerModules.Consumers.TopicFirebaseConsumer,
         const notification: NativeNotification = {};
         const sendParam = {
           notification,
-          data: payload.body
+          data: payload.body,
+          collapse_key: payload.topic
         };
 
         if (payload.title) notification.title = payload.title;
